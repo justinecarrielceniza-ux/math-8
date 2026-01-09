@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 8 Math: Systems Mastery</title>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #27ae60;
+            --danger: #e74c3c;
+            --light: #f4f7f6;
+            --white: #ffffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--light);
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            transition: all 0.4s ease;
+        }
+
+        /* Discussion Panel */
+        #discussion {
+            flex: 1;
+            padding: 40px;
+            background: var(--white);
+            overflow-y: auto;
+            border-right: 2px solid #ddd;
+            transition: 0.4s;
+        }
+
+        /* Activity Panel */
+        #activity {
+            width: 450px;
+            padding: 30px;
+            background: #ecf0f1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            transition: 0.4s;
+            position: relative;
+        }
+
+        /* State Classes */
+        .hidden { width: 0 !important; padding: 0 !important; opacity: 0; pointer-events: none; }
+        .full-view { width: 100vw !important; flex: none !important; }
+
+        /* Toolbar */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--light);
+            margin-bottom: 20px;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-zoom { background: var(--secondary); color: white; }
+        .btn-ppt { background: #d35400; color: white; }
+        .btn-toggle { background: var(--primary); color: white; }
+        .btn-full { background: var(--accent); color: white; }
+        .btn-vid { background: var(--danger); color: white; text-decoration: none; display: inline-flex; align-items: center; padding: 0 15px; border-radius: 6px; font-size: 14px;}
+
+        button:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+        /* Text Content */
+        .zoom-wrapper { transform-origin: top left; transition: transform 0.2s; }
+        .math-block {
+            background: #f8f9fa;
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .activity-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            line-height: 1.5;
+        }
+
+        .badge {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="mainContainer">
+    <section id="discussion">
+        <div class="toolbar">
+            <button class="btn-zoom" onclick="adjustZoom(0.1)">Zoom In +</button>
+            <button class="btn-zoom" onclick="adjustZoom(-0.1)">Zoom Out -</button>
+            <button class="btn-ppt" onclick="makePPT()">Download PPT</button>
+            <button class="btn-toggle" onclick="toggleActivity()">Hide Activity</button>
+            <a href="https://www.youtube.com/watch?v=blx9rxVrUDY" target="_blank" class="btn-vid">YouTube Link</a>
+        </div>
+
+        <div class="zoom-wrapper" id="zoomTarget">
+            <h1>Problem Solving: Systems of Linear Equations</h1>
+            <p><strong>Lesson 7 - MATATAG Grade 8 Mathematics</strong></p>
+
+            <h3>1. The Core Objective</h3>
+            <p>Students will solve problems involving systems of linear equations in two variables by modeling real-life situations. The goal is to identify two independent constraints that define a single solution.</p>
+
+            <div class="math-block">
+                <h4>Polya’s 4-Step Method (In Detail)</h4>
+                <ul>
+                    <li><strong>Understand:</strong> List given values. Identify what is missing (e.g., $x$ = price of apple, $y$ = price of orange).</li>
+                    <li><strong>Plan:</strong> Create two equations. Look for "Total" keywords.</li>
+                    <li><strong>Solve:</strong> Perform algebraic operations. If variables cancel out and $0=0$, there are infinite solutions. If $0=5$, there is no solution.</li>
+                    <li><strong>Check:</strong> Substitute values back into the *other* equation to verify.</li>
+                </ul>
+            </div>
+
+            <h3>2. Specialized Formulas</h3>
+            <p>Different word problems require specific background knowledge:</p>
+            <ul>
+                <li><strong>Geometric:</strong> Supplementary angles ($A + B = 180^\circ$).</li>
+                <li><strong>Interest:</strong> $Principal \times Rate = Interest$. If you have two accounts: $0.05x + 0.08y = Total Interest$.</li>
+                <li><strong>Motion:</strong> $Distance = Rate \times Time$. In a river, your effective rate changes: $(Rate + Current)$ or $(Rate - Current)$.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="activity">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin: 0;">Activity Items</h2>
+            <button class="btn-full" id="fullBtn" onclick="toggleFullView()">Full View</button>
+        </div>
+        <div id="activity-list"></div>
+    </section>
+</div>
+
+<script>
+    // 1. Zoom Logic
+    let currentScale = 1;
+    function adjustZoom(amount) {
+        currentScale += amount;
+        document.getElementById('zoomTarget').style.transform = `scale(${currentScale})`;
+    }
+
+    // 2. View Toggles
+    function toggleActivity() {
+        const act = document.getElementById('activity');
+        const btn = event.target;
+        act.classList.toggle('hidden');
+        btn.innerText = act.classList.contains('hidden') ? "Show Activity" : "Hide Activity";
+    }
+
+    function toggleFullView() {
+        const act = document.getElementById('activity');
+        const disc = document.getElementById('discussion');
+        const btn = document.getElementById('fullBtn');
+        
+        act.classList.toggle('full-view');
+        if(act.classList.contains('full-view')) {
+            disc.style.display = 'none';
+            btn.innerText = "Exit Full View";
+        } else {
+            disc.style.display = 'block';
+            btn.innerText = "Full View";
+        }
+    }
+
+    // 3. Populate Activities
+    const items = [
+        {cat: "Numbers", q: "The sum of two numbers is 45 and their difference is 9. Find the numbers."},
+        {cat: "Geometry", q: "The perimeter of a rectangle is 60 cm. The length is 6 cm more than the width. Find the dimensions."},
+        {cat: "Age", q: "A father is 3 times as old as his son. In 12 years, he will be only twice as old. Find their current ages."},
+        {cat: "Money", q: "9 notebooks and 4 ballpens cost Php 225. 8 notebooks and 6 ballpens cost Php 222. Find the price of each."},
+        {cat: "Investment", q: "Mel invested Php 30,000, part at 6% and part at 9%. Total interest is Php 2,340. Find each part."},
+        {cat: "Mixture", q: "How many ounces of 30% salt solution and 60% salt solution are needed for 60 oz of 50% solution?"},
+        {cat: "Motion", q: "A boat goes 336 miles downstream in 12h and upstream in 14h. Find boat and current speed."},
+        {cat: "Angles", q: "Two angles are supplementary. One is 20 degrees more than three times the other. Find both."},
+        {cat: "Digits", q: "The sum of the digits of a 2-digit number is 12. Reversing digits makes the number 18 less. Find it."},
+        {cat: "Motion", q: "Two cars 261km apart meet in 3 hours. One car is 3kph faster than the other. Find both speeds."}
+    ];
+
+    const listContainer = document.getElementById('activity-list');
+    items.forEach((item, i) => {
+        listContainer.innerHTML += `
+            <div class="activity-card">
+                <span class="badge">${item.cat}</span><br>
+                <strong>${i+1}.</strong> ${item.q}
+            </div>`;
+    });
+
+    // 4. PPTX Generator
+    function makePPT() {
+        let pptx = new PptxGenJS();
+        let s1 = pptx.addSlide();
+        s1.addText("Grade 8 Math: Lesson 7", { x:1, y:1, w:'80%', fontSize:32, bold:true, align:'center' });
+        s1.addText("Solving Problems Involving Systems of Linear Equations", { x:1, y:2, w:'80%', fontSize:20, align:'center' });
+
+        let s2 = pptx.addSlide();
+        s2.addText("The 4-Step Plan", { x:0.5, y:0.5, fontSize:24, bold:true, color:'27ae60' });
+        s2.addText("1. Understand (Assign variables)\n2. Plan (Write equations)\n3. Solve (Substitution/Elimination)\n4. Check (Verify values)", { x:0.5, y:1.5, fontSize:18 });
+
+        let s3 = pptx.addSlide();
+        s3.addText("Problem Types", { x:0.5, y:0.5, fontSize:24, bold:true });
+        s3.addBullet({ text: "Number & Age Problems", options: { x:1, y:1.2, fontSize:16 } });
+        s3.addBullet({ text: "Geometric (Perimeter/Angles)", options: { x:1, y:1.7, fontSize:16 } });
+        s3.addBullet({ text: "Mixture & Investment", options: { x:1, y:2.2, fontSize:16 } });
+
+        pptx.writeFile({ fileName: "Lesson_Systems_Linear_Equations.pptx" });
+    }
+</script>
+
+</body>
+</html>
